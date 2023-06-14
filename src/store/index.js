@@ -17,7 +17,7 @@ const counterRecuder = (state = { counter: 0 }, action) => {
     return state;
 }
 
-const store = redux.createStore(counterRecuder);
+const store = createStore(counterRecuder);
 
 export default store;
 
