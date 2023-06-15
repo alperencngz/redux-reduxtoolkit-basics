@@ -1,41 +1,37 @@
-import { createStore } from "redux";
+import { createSlice, configureStore } from "@reduxjs/toolkit";
 
 const initialState = { counter: 0, showCounter: true }
 
-const counterRecuder = (state = initialState, action) => {
-
-    if (action.type === "increment") {
-        return {
-            counter: state.counter + 1,
-            showCounter: state.showCounter
-        }
+const counterSlice = createSlice({
+    name: "counter",
+    initialState,
+    reducers: {
+        increment(state) {
+            state.counter++;
+        },
+        decrement(state) {
+            state.counter--;
+        },
+        increase(state, action) {
+            state.counter += action.amount;
+        },
+        toggleCounter(state) {
+            state.showCounter = !state.showCounter;
+        },
     }
+});
 
-    if (action.type === "increase") {
-        return {
-            counter: state.counter + action.amount,
-            showCounter: state.showCounter
-        }
-    }
-
-    if (action.type === "decrement") {
-        return {
-            counter: state.counter - 1,
-            showCounter: state.showCounter
-        }
-    }
-
-    if (action.type === "toggle") {
-        return {
-            showCounter: !state.showCounter,
-            counter: state.counter
-        }
-    }
-
-    return state;
-}
-
-const store = createStore(counterRecuder);
+/* 
+configureStore creates a store basically
+the important part is when we don't use toolkit, we have 1 State and 1 createStore that 
+takes 1 reducer function. However, with toolkit we have different state "slices" like
+counterSlice, we put all these slices into reducer with syntax like
+reducer: {counter: counterSlice.reducer} and it creates us 1 reducer function for store
+with merged slices
+*/
+const store = configureStore({
+    reducer: counterSlice.reducer,
+});
 
 export default store;
 
